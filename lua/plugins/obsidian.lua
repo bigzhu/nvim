@@ -1,24 +1,18 @@
 return {
   "epwalsh/obsidian.nvim",
-  -- dir = "~/Sync/Projects/obsidian.nvim",
-  version = "*", -- recommended, use latest release instead of latest commit
+  version = "*",
   lazy = false,
-  -- ft = "markdown",
-  -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-  -- event = {
-  --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-  --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-  --   -- refer to `:h file-pattern` for more examples
-  --   "BufReadPre path/to/my-vault/*.md",
-  --   "BufNewFile path/to/my-vault/*.md",
-  -- },
   dependencies = {
-    -- Required.
     "nvim-lua/plenary.nvim",
-
-    -- see below for full list of optional dependencies 👇
+    -- https://www.lazyvim.org/extras/coding/nvim-cmp
+    -- :LazyExtras 确保安装 coding.nvim-cmp, 这里添加无用
+    "hrsh7th/nvim-cmp",
   },
   opts = {
+    completion = {
+      nvim_cmp = true,
+      min_chars = 1,
+    },
     preferred_link_style = "markdown",
     workspaces = {
       {
