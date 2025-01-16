@@ -13,6 +13,7 @@ return {
       nvim_cmp = true,
       min_chars = 1,
     },
+
     preferred_link_style = "markdown",
     workspaces = {
       {
@@ -41,14 +42,5 @@ return {
       -- return tostring(os.time()) .. "-" .. suffix
       return suffix
     end,
-    mappings = {
-      -- 在visual模式下按回车键时创建链接
-      ["<cr>"] = {
-        action = function()
-          return require("obsidian").util.smart_action()
-        end,
-        opts = { buffer = true, expr = true },
-      },
-    },
   },
 }
