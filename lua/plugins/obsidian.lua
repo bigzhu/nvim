@@ -38,7 +38,8 @@ return {
           suffix = suffix .. string.char(math.random(65, 90))
         end
       end
-      return tostring(os.time()) .. "-" .. suffix
+      -- return tostring(os.time()) .. "-" .. suffix
+      return suffix
     end,
     mappings = {
       -- 在visual模式下按回车键时创建链接
