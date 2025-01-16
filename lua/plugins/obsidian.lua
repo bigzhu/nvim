@@ -1,5 +1,6 @@
 return {
-  "epwalsh/obsidian.nvim",
+  -- "epwalsh/obsidian.nvim",
+  dir = "~/Sync/Projects/obsidian.nvim",
   version = "*",
   lazy = false,
   dependencies = {
@@ -51,6 +52,22 @@ return {
       -- vim.fn.jobstart({"xdg-open", url})  -- linux
       -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
       -- vim.ui.open(url) -- need Neovim 0.10.0+
+    end,
+    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
+    -- file it will be ignored but you can customize this behavior here.
+    ---@param img string
+    follow_img_func = function(img)
+      -- Get the current buffer's directory as base path
+      local current_file = vim.fn.expand("%:p:h")
+      local abs_path = current_file .. "/" .. img
+      abs_path = vim.fn.expand(abs_path)
+
+      vim.fn.jobstart({ "open", abs_path }) -- Mac OS
+      -- vim.notify("Opening image: " .. abs_path, vim.log.levels.INFO)
+      -- vim.fn.jobstart({ "qlmanage", "-p", abs_path }) -- Mac OS quick look preview
+      -- vim.fn.jobstart({ "kitty", "+kitten", "icat", abs_path })
+      -- vim.fn.jobstart({"xdg-open", url})  -- linux
+      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
     end,
   },
 }
