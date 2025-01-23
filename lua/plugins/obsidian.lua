@@ -32,15 +32,19 @@ return {
       -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
       local suffix = ""
       if title ~= nil then
-        -- If title is given, transform it into valid file name.
-        suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+        -- vim.notify("first title : " .. title, vim.log.levels.INFO)
+        -- 移除末尾的空白字符和不可见字符
+        suffix = vim.fn.trim(title)
+        -- :gsub(" ", "-")      -- 空格转连字符
+        -- :gsub("[\n\r]+", "") -- 移除换行
+        -- :gsub("[<>:\"/\\|?*]+", "-") -- 移除非法字符
       else
         -- If title is nil, just add 4 random uppercase letters to the suffix.
         for _ = 1, 4 do
           suffix = suffix .. string.char(math.random(65, 90))
         end
       end
-      -- return tostring(os.time()) .. "-" .. suffix
+      -- vim.notify("Final suffix: " .. suffix, vim.log.levels.INFO)
       return suffix
     end,
     -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
