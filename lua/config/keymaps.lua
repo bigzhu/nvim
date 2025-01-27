@@ -13,6 +13,7 @@ else
   vim.keymap.set("n", "<C-f>", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Search cheese by file name" })
   vim.keymap.set("n", "<C-j>", "<cmd>ObsidianSearch<CR>", { desc = "Search cheese by content" })
   vim.keymap.set("n", "<C-g>", "<cmd>ObsidianToday<CR>", { desc = "Cheese create a new daily note" })
+  vim.keymap.set("n", "<C-n>", "<cmd>ObsidianNew<CR>", { desc = "Cheese to create a new note" })
   vim.keymap.set("n", "<C-t>", "o<CR><Esc><cmd>ObsidianTemplate main.md<CR>", { desc = "Using templates" })
   map("v", "<CR>", "<cmd>ObsidianLinkNew<cr>", { desc = "create link" })
 
@@ -25,7 +26,4 @@ else
   vim.api.nvim_set_keymap("!", "<Esc>[13;5u", "<C-CR>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("", "<Esc>[13;2u", "<S-CR>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("!", "<Esc>[13;2u", "<S-CR>", { noremap = true, silent = true })
-
-
-
 end
