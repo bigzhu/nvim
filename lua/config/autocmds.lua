@@ -9,3 +9,11 @@
 vim.api.nvim_create_autocmd({ "VimLeave" }, {
   command = 'set guicursor= | call chansend(v:stderr, "\\e[5 q")',
 })
+
+-- 将 conf.d 目录下的 .conf 文件识别为 nginx 配置文件
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*/conf.d/*.conf",
+  callback = function()
+    vim.bo.filetype = "nginx"
+  end,
+})
