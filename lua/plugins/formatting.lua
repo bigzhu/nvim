@@ -12,6 +12,8 @@ return {
       --   typescript = { "prettier" },
       --   pip3 install nginxfmt
       nginx = { "nginxfmt" },
+      graphql = { "prettier" },
+
       -- 添加 Python 的格式化器
       --   python = { "black" },
       -- 添加 markdown 格式化
