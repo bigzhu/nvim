@@ -1,123 +1,76 @@
 -- return {
---   "yetone/avante.nvim",
---   event = "VeryLazy",
---   lazy = false,
---   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
---   opts = {
---     -- add any opts here
---     provider = "gemini",
---     -- vendors = {
---     --   deepseek = {
---     --     __inherited_from = "openai",
---     --     api_key_name = "DEEPSEEK_API_KEY",
---     --     endpoint = "https://api.deepseek.com",
---     --     model = "deepseek-coder",
---     --   },
---     -- },
---   },
---   -- 如果您想从源代码构建，请执行 `make BUILD_FROM_SOURCE=true`
---   build = "make",
---   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- 对于 Windows
---   dependencies = {
---     "nvim-treesitter/nvim-treesitter",
---     "stevearc/dressing.nvim",
---     "nvim-lua/plenary.nvim",
---     "MunifTanjim/nui.nvim",
---     --- 以下依赖项是可选的，
---     "echasnovski/mini.pick", -- 用于文件选择器提供者 mini.pick
---     "nvim-telescope/telescope.nvim", -- 用于文件选择器提供者 telescope
---     "hrsh7th/nvim-cmp", -- avante 命令和提及的自动完成
---     "ibhagwan/fzf-lua", -- 用于文件选择器提供者 fzf
---     "nvim-tree/nvim-web-devicons", -- 或 echasnovski/mini.icons
---     "zbirenbaum/copilot.lua", -- 用于 providers='copilot'
---     {
---       -- 支持图像粘贴
---       "HakonHarnes/img-clip.nvim",
---       event = "VeryLazy",
---       opts = {
---         -- 推荐设置
---         default = {
---           embed_image_as_base64 = false,
---           prompt_for_file_name = false,
---           drag_and_drop = {
---             insert_mode = true,
+--   {
+--     "yetone/avante.nvim",
+--     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+--     -- ⚠️ must add this setting! ! !
+--     build = vim.fn.has("win32") and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+--       or "make",
+--     event = "VeryLazy",
+--     version = false, -- Never set this value to "*"! Never!
+--     ---@module 'avante'
+--     ---@type avante.Config
+--     opts = {
+--       -- add any opts here
+--       -- for example
+--       provider = "claude",
+--       providers = {
+--         claude = {
+--           endpoint = "https://api.anthropic.com",
+--           model = "claude-sonnet-4-20250514",
+--           timeout = 30000, -- Timeout in milliseconds
+--           extra_request_body = {
+--             temperature = 0.75,
+--             max_tokens = 20480,
 --           },
---           -- Windows 用户必需
---           use_absolute_path = true,
+--         },
+--         moonshot = {
+--           endpoint = "https://api.moonshot.ai/v1",
+--           model = "kimi-k2-0711-preview",
+--           timeout = 30000, -- Timeout in milliseconds
+--           extra_request_body = {
+--             temperature = 0.75,
+--             max_tokens = 32768,
+--           },
 --         },
 --       },
 --     },
---     {
---       -- 如果您有 lazy=true，请确保正确设置
---       "MeanderingProgrammer/render-markdown.nvim",
---       opts = {
---         file_types = { "markdown", "Avante" },
+--     dependencies = {
+--       "nvim-lua/plenary.nvim",
+--       "MunifTanjim/nui.nvim",
+--       --- The below dependencies are optional,
+--       "echasnovski/mini.pick", -- for file_selector provider mini.pick
+--       "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+--       "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+--       "ibhagwan/fzf-lua", -- for file_selector provider fzf
+--       "stevearc/dressing.nvim", -- for input provider dressing
+--       "folke/snacks.nvim", -- for input provider snacks
+--       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+--       "zbirenbaum/copilot.lua", -- for providers='copilot'
+--       {
+--         -- support for image pasting
+--         "HakonHarnes/img-clip.nvim",
+--         event = "VeryLazy",
+--         opts = {
+--           -- recommended settings
+--           default = {
+--             embed_image_as_base64 = false,
+--             prompt_for_file_name = false,
+--             drag_and_drop = {
+--               insert_mode = true,
+--             },
+--             -- required for Windows users
+--             use_absolute_path = true,
+--           },
+--         },
 --       },
---       ft = { "markdown", "Avante" },
+--       {
+--         -- Make sure to set this up properly if you have lazy=true
+--         "MeanderingProgrammer/render-markdown.nvim",
+--         opts = {
+--           file_types = { "markdown", "Avante" },
+--         },
+--         ft = { "markdown", "Avante" },
+--       },
 --     },
 --   },
 -- }
-
-return {
-  "yetone/avante.nvim",
-  -- 如果您想从源代码构建，请执行 `make BUILD_FROM_SOURCE=true`
-  build = "make", -- ⚠️ 一定要加上这一行配置！！！！！
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- 对于 Windows
-  event = "VeryLazy",
-  version = false, -- 永远不要将此值设置为 "*"！永远不要！
-  ---@module 'avante'
-  ---@type avante.Config
-  opts = {
-    -- 在此处添加任何选项
-    -- 例如
-    provider = "gemini",
-    -- provider = "claude",
-    -- providers = {
-    --   claude = {
-    --     endpoint = "https://api.anthropic.com",
-    --     model = "claude-sonnet-4-20250514",
-    --     timeout = 30000, -- Timeout in milliseconds
-    --       extra_request_body = {
-    --         temperature = 0.75,
-    --         max_tokens = 20480,
-    --       },
-    --   },
-    -- },
-  },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "MunifTanjim/nui.nvim",
-    --- 以下依赖项是可选的，
-    "echasnovski/mini.pick", -- 用于文件选择器提供者 mini.pick
-    "nvim-telescope/telescope.nvim", -- 用于文件选择器提供者 telescope
-    "hrsh7th/nvim-cmp", -- avante 命令和提及的自动完成
-    "ibhagwan/fzf-lua", -- 用于文件选择器提供者 fzf
-    "nvim-tree/nvim-web-devicons", -- 或 echasnovski/mini.icons
-    "zbirenbaum/copilot.lua", -- 用于 providers='copilot'
-    {
-      -- 支持图像粘贴
-      "HakonHarnes/img-clip.nvim",
-      event = "VeryLazy",
-      opts = {
-        -- 推荐设置
-        default = {
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = true,
-          },
-          -- Windows 用户必需
-          use_absolute_path = true,
-        },
-      },
-    },
-    {
-      -- 如果您有 lazy=true，请确保正确设置
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = {
-        file_types = { "markdown", "Avante" },
-      },
-      ft = { "markdown", "Avante" },
-    },
-  },
-}

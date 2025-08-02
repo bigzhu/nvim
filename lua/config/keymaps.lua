@@ -20,6 +20,24 @@ else
   -- 进入 cheese 的 todo 页面
   -- vim.keymap.set("n", "<leader>td", "<cmd>TodoTelescope cwd=~/Sync/home/cheese/<CR>", { desc = "Enter cheese todo" })
   vim.keymap.set("n", "<leader>r", ":RunCode<CR>", { desc = "Run current code" })
+  
+  -- 自定义函数：只输入参数运行当前 Python 文件
+  local function run_python_with_args()
+    local filename = vim.fn.expand("%:t") -- 获取当前文件名
+    if vim.bo.filetype ~= "python" then
+      vim.notify("Not a Python file", vim.log.levels.WARN)
+      return
+    end
+    
+    vim.ui.input({ prompt = "Arguments: " }, function(args)
+      if args then
+        local cmd = "uv run python " .. filename .. " " .. args
+        require("code_runner.commands").run_from_fn(cmd)
+      end
+    end)
+  end
+  
+  vim.keymap.set("n", "<leader>R", run_python_with_args, { desc = "Run Python file with arguments" })
 
   --  make nvim distinguish between <CR> (Enter) and <C-CR> (Ctrl+Enter)
   vim.api.nvim_set_keymap("", "<Esc>[13;5u", "<C-CR>", { noremap = true, silent = true })
