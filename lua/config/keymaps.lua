@@ -10,11 +10,11 @@ if vim.g.vscode then
   -- vim.keymap.set("n", "K", "<cmd>call VSCodeCall('editor.action.showHover')<CR>", { silent = true })
 else
   -- ordinary Neovim
-  vim.keymap.set("n", "<C-f>", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Search cheese by file name" })
-  vim.keymap.set("n", "<C-j>", "<cmd>ObsidianSearch<CR>", { desc = "Search cheese by content" })
-  vim.keymap.set("n", "<C-g>", "<cmd>ObsidianToday<CR>", { desc = "Cheese create a new daily note" })
-  vim.keymap.set("n", "<C-n>", "<cmd>ObsidianNew<CR>", { desc = "Cheese to create a new note" })
-  vim.keymap.set("n", "<C-t>", "o<CR><Esc><cmd>ObsidianTemplate main.md<CR>", { desc = "Using templates" })
+  vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Search cheese by file name" })
+  vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search cheese by content" })
+  vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Cheese create a new daily note" })
+  vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Cheese to create a new note" })
+  vim.keymap.set("n", "<leader>ot", "o<CR><Esc><cmd>ObsidianTemplate main.md<CR>", { desc = "Using templates" })
   map("v", "<CR>", "<cmd>ObsidianLinkNew<cr>", { desc = "create link" })
 
   -- 进入 cheese 的 todo 页面
