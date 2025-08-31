@@ -40,12 +40,23 @@ return {
       },
     },
     sort_function = function(a, b)
-      -- 首先按类型排序（目录在前）
-      if a.type ~= b.type then
-        return a.type == "directory"
+      -- 安全检查：确保节点有必要的字段
+      if not a or not b then
+        return false
       end
+      
+      local a_name = a.name or ""
+      local b_name = b.name or ""
+      local a_type = a.type or "file"
+      local b_type = b.type or "file"
+      
+      -- 首先按类型排序（目录在前）
+      if a_type ~= b_type then
+        return a_type == "directory"
+      end
+      
       -- 然后按名称排序（字母顺序）
-      return a.name:lower() < b.name:lower()
+      return a_name:lower() < b_name:lower()
     end,
   },
 }

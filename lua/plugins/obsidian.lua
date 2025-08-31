@@ -5,9 +5,10 @@ return {
   lazy = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope.nvim",
-    -- https://www.lazyvim.org/extras/coding/nvim-cmp
-    -- :LazyExtras 确保安装 coding.nvim-cmp, 这里添加无用
+    {
+      "nvim-telescope/telescope.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" }
+    },
     "hrsh7th/nvim-cmp",
   },
   opts = {
@@ -22,23 +23,6 @@ return {
     sort_by = "modified",
     sort_reversed = true,
 
-    -- Telescope picker 配置
-    picker = {
-      -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-      name = "telescope.nvim",
-      -- Optional, configure key mappings for the picker. These are the defaults.
-      mappings = {
-        -- Create a new note from your query.
-        new = "<C-x>",
-        -- Insert a link to the selected note.
-        insert_link = "<C-l>",
-      },
-      -- Optional, customizations to be passed to the telescope picker.
-      telescope = {
-        sorting_strategy = "descending",
-        tiebreak = "mtime",
-      },
-    },
     workspaces = {
       {
         name = "cheese",
