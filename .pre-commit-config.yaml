@@ -1,0 +1,32 @@
+# Pre-commit hooks for this Neovim/LazyVim config
+# Usage:
+#   pipx install pre-commit  # or pip install --user pre-commit
+#   pre-commit install
+#
+# Ensure `stylua` is installed and on PATH.
+#   brew install stylua      # macOS
+#   cargo install stylua     # Rust
+#   scoop install stylua     # Windows
+repos:
+  - repo: local
+    hooks:
+      - id: stylua-format
+        name: stylua (format Lua)
+        language: system
+        entry: stylua
+        args: ["--config-path", "stylua.toml"]
+        types: [lua]
+        pass_filenames: true
+
+      - id: nvim-headless-startup
+        name: neovim headless startup check
+        language: system
+        entry: sh
+        args:
+          - -c
+          - |
+            nvim --headless "+qa" >/dev/null 2>&1 || {
+              echo "Neovim failed to start with this config." >&2
+              exit 1
+            }
+        pass_filenames: false

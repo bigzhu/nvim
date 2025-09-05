@@ -1,84 +1,78 @@
-return {
-  -- "epwalsh/obsidian.nvim",
-  dir = "~/Sync/Projects/obsidian.nvim",
+local dev_dir = vim.env.OBSIDIAN_DEV_DIR and vim.fn.expand(vim.env.OBSIDIAN_DEV_DIR) or nil
+local use_local = dev_dir and vim.fn.isdirectory(dev_dir) == 1
+local ws_path = vim.env.OBSIDIAN_DIR or "~/Sync/home/cheese"
+
+local function open_external(target)
+  -- Prefer Neovim 0.10+ API if available
+  if vim.ui and vim.ui.open then
+    pcall(vim.ui.open, target)
+    return
+  end
+  local sys = (vim.uv or vim.loop).os_uname().sysname
+  if sys == "Darwin" then
+    vim.fn.jobstart({ "open", target }, { detach = true })
+  elseif sys == "Windows_NT" then
+    vim.fn.jobstart({ "cmd.exe", "/c", "start", "", target }, { detach = true })
+  else
+    vim.fn.jobstart({ "xdg-open", target }, { detach = true })
+  end
+end
+
+local spec = {
   version = "*",
-  lazy = false,
+  lazy = true,
+  ft = { "markdown" },
+  cmd = {
+    "ObsidianQuickSwitch",
+    "ObsidianSearch",
+    "ObsidianToday",
+    "ObsidianNew",
+    "ObsidianTemplate",
+    "ObsidianFollowLink",
+  },
   dependencies = {
     "nvim-lua/plenary.nvim",
-    {
-      "nvim-telescope/telescope.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" }
-    },
+    { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     "hrsh7th/nvim-cmp",
   },
   opts = {
-    completion = {
-      nvim_cmp = true,
-      min_chars = 1,
-    },
-
+    completion = { nvim_cmp = true, min_chars = 1 },
     preferred_link_style = "markdown",
-
-    -- 文件搜索排序配置
     sort_by = "modified",
     sort_reversed = true,
-
     workspaces = {
-      {
-        name = "cheese",
-        path = "~/Sync/home/cheese",
-      },
+      { name = "cheese", path = ws_path },
     },
-    -- Optional, customize how note IDs are generated given an optional title.
     ---@param title string|?
     ---@return string
-    ---使用 title 作为 node 的文件名
     note_id_func = function(title)
-      -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
-      -- In this case a note with the title 'My new note' will be given an ID that looks
-      -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
       local suffix = ""
       if title ~= nil then
-        -- vim.notify("first title : " .. title, vim.log.levels.INFO)
-        -- 移除末尾的空白字符和不可见字符
         suffix = vim.fn.trim(title)
-        -- :gsub(" ", "-")      -- 空格转连字符
-        -- :gsub("[\n\r]+", "") -- 移除换行
-        -- :gsub("[<>:\"/\\|?*]+", "-") -- 移除非法字符
       else
-        -- If title is nil, just add 4 random uppercase letters to the suffix.
         for _ = 1, 4 do
           suffix = suffix .. string.char(math.random(65, 90))
         end
       end
-      -- vim.notify("Final suffix: " .. suffix, vim.log.levels.INFO)
       return suffix
     end,
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
-    -- URL it will be ignored but you can customize this behavior here.
     ---@param url string
     follow_url_func = function(url)
-      -- Open the URL in the default web browser.
-      -- vim.fn.jobstart({ "open", url }) -- Mac OS
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
-      vim.ui.open(url) -- need Neovim 0.10.0+
+      open_external(url)
     end,
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
-    -- file it will be ignored but you can customize this behavior here.
     ---@param img string
     follow_img_func = function(img)
-      -- Get the current buffer's directory as base path
       local current_file = vim.fn.expand("%:p:h")
-      local abs_path = current_file .. "/" .. img
-      abs_path = vim.fn.expand(abs_path)
-
-      vim.fn.jobstart({ "open", abs_path }) -- Mac OS
-      -- vim.notify("Opening image: " .. abs_path, vim.log.levels.INFO)
-      -- vim.fn.jobstart({ "qlmanage", "-p", abs_path }) -- Mac OS quick look preview
-      -- vim.fn.jobstart({ "kitty", "+kitten", "icat", abs_path })
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
+      local abs_path = vim.fn.expand(current_file .. "/" .. img)
+      open_external(abs_path)
     end,
   },
 }
+
+if use_local then
+  spec.dir = dev_dir
+else
+  spec[1] = "epwalsh/obsidian.nvim"
+end
+
+return spec
