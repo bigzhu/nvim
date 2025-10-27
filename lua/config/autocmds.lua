@@ -6,3 +6,14 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+
+autocmd("FileType", {
+  group = augroup("markdown_spelllang", { clear = true }),
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.spelllang = { "en_us", "cjk" }
+  end,
+})
