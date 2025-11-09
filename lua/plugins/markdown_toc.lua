@@ -4,7 +4,7 @@ return {
     ft = { "markdown" },
     opts = {
       attach_mode = "global",
-      open_automatic = true,
+      open_automatic = false,
       close_on_select = true,
       layout = {
         min_width = 28,
