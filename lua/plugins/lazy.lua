@@ -20,6 +20,7 @@ return {
         "lua",
         "markdown",
         "markdown_inline",
+        "pinescript",
         "python",
         "query",
         "regex",
