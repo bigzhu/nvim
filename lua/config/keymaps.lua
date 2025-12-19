@@ -41,6 +41,15 @@ else
 
   vim.keymap.set("n", "<leader>R", run_python_with_args, { desc = "Run Python file with arguments" })
 
+  -- Open link in markdown with Enter key
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+      vim.keymap.set("n", "<CR>", "<cmd>ObsidianFollowLink<CR>",
+        { buffer = true, desc = "Open link" })
+    end,
+  })
+
   --  make nvim distinguish between <CR> (Enter) and <C-CR> (Ctrl+Enter)
   vim.api.nvim_set_keymap("", "<Esc>[13;5u", "<C-CR>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("!", "<Esc>[13;5u", "<C-CR>", { noremap = true, silent = true })
