@@ -1,10 +1,10 @@
 return {
-  { "ellisonleao/gruvbox.nvim" },
-  -- Configure LazyVim to load gruvbox
+  { "rebelot/kanagawa.nvim" },
+  -- Configure LazyVim to load kanagawa
   {
     "LazyVim/LazyVim",
     opts = {
-      -- colorscheme = "gruvbox",
+      colorscheme = "kanagawa",
     },
   },
   -- add more treesitter parsers
