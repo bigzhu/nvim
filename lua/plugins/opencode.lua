@@ -33,7 +33,11 @@ return {
       { "goo", function() return require("opencode").operator("@this ") .. "_" end, desc = "Opencode: Add Line", expr = true },
     },
     config = function()
-      vim.g.opencode_opts = {}
+      vim.g.opencode_opts = {
+        events = {
+          enabled = true,
+        },
+      }
       vim.o.autoread = true
 
       local Server = require("opencode.server")
@@ -51,6 +55,13 @@ return {
           end)
         end)
       end
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "OpencodeEvent:session.idle",
+        callback = function()
+          vim.notify("OpenCode 回复完毕", vim.log.levels.INFO, { title = "opencode" })
+        end,
+      })
     end,
   },
 }
