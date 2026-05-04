@@ -46,6 +46,13 @@
       },
     },
   },
+  keys = {
+    { "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end, desc = "Opencode: Ask", mode = { "n", "x" } },
+    { "<leader>as", function() require("opencode").select() end, desc = "Opencode: Select Action", mode = { "n", "x" } },
+    { "<leader>at", function() require("opencode").toggle() end, desc = "Opencode: Toggle", mode = { "n", "t" } },
+    { "go", function() return require("opencode").operator("@this ") end, desc = "Opencode: Add Range", mode = { "n", "x" }, expr = true },
+    { "goo", function() return require("opencode").operator("@this ") .. "_" end, desc = "Opencode: Add Line", expr = true },
+  },
   config = function()
     ---@type opencode.Opts
     vim.g.opencode_opts = {
@@ -53,21 +60,6 @@
     }
 
     vim.o.autoread = true -- `opts.events.reload` 所需
-
-    -- 推荐/示例键映射
-    vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "提问 opencode…" })
-    vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "执行 opencode 操作…" })
-    vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,                          { desc = "切换 opencode" })
-
-    vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { desc = "添加范围到 opencode", expr = true })
-    vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "添加行到 opencode", expr = true })
-
-    vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "opencode 向上滚动" })
-    vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "opencode 向下滚动" })
-
-    -- 如果你使用了上面的 <C-a> 和 <C-x> 键映射，可能需要以下映射 — 否则可考虑使用 <leader>o…（并从 toggle 映射中移除终端模式）
-    vim.keymap.set("n", "+", "<C-a>", { desc = "递增光标下数字", noremap = true })
-    vim.keymap.set("n", "-", "<C-x>", { desc = "递减光标下数字", noremap = true })
   end,
 }
 ```
@@ -182,20 +174,16 @@ vim.g.opencode_opts = {
 
 当前配置中为 opencode.nvim 设置了以下快捷键：
 
-| 快捷键 | 模式 | 功能 |
+| 快捷键 | 模式 | 说明 |
 |---|---|---|
-| `<C-a>` | n, x | 提问 opencode（自动提交 `@this:` 前缀） |
-| `<C-x>` | n, x | 执行 opencode 操作（select 菜单，含切换模型等选项） |
-| `<C-.>` | n, t | 切换 opencode 终端窗口 |
-| `go` | n, x | 添加选中范围到 opencode |
-| `goo` | n | 添加当前行到 opencode |
-| `<S-C-u>` | n | opencode 向上滚动半页 |
-| `<S-C-d>` | n | opencode 向下滚动半页 |
-| `<a-a>` | n, i | 在 snacks picker 输入框中发送到 opencode |
-| `+` | n | 恢复 `<C-a>` 的递增功能（因 `<C-a>` 被 opencode 占用） |
-| `-` | n | 恢复 `<C-x>` 的递减功能（因 `<C-x>` 被 opencode 占用） |
+| `<leader>aa` | n, x | **Ask — 向 opencode 提问。** 在普通模式按下，自动填入 `@this:` 前缀（将当前光标所在的符号/函数作为上下文）并弹出输入框，按回车直接提交。在可视模式下选中代码后按下，则将被选中代码作为上下文。最常用的入口。 |
+| `<leader>as` | n, x | **Select — 打开操作菜单。** 弹出选择界面，可从中选取：预设提示词（审查、解释、修复、测试等）、opencode 命令（切换模型、管理会话等）、服务器控制。类似于 Vim 的 `:Telescope` 但专门针对 opencode。 |
+| `<leader>at` | n, t | **Toggle — 切换 opencode 终端窗口。** 打开或关闭内嵌的 opencode TUI 终端。在终端模式下也可使用，方便在不离开终端时快速隐藏/显示。 |
+| `go` | n, x | **Operator — 添加范围到 opencode。** 类似 Vim 的 `d`/`y` 操作符，按下后等待动作（如 `iw` 选中单词、`ap` 选中段落、`j` 向下一行），选中范围后自动填入 `@this` 并弹出输入框。支持 `.` 重复。 |
+| `goo` | n | **Operator Line — 添加当前行到 opencode。** 直接选中光标所在行，填入 `@this` 并弹出输入框。`go` 的快捷变体，等效于 `go_`。 |
+| `<a-a>` | n, i | **Send — 在 snacks picker 输入框中发送。** 仅在使用 `snacks.picker` 的 select 菜单时生效，按 `Alt+a` 将当前输入发送到 opencode。 |
 
-> 模型切换：按 `<C-x>` 打开 select 菜单，选择模型切换项；或使用命令 `agent.cycle`。
+> 模型切换：按 `<leader>as` 打开 select 菜单，使用 `Tab`/`Shift-Tab` 在预览和列表中移动，选择模型切换项回车；或使用命令 `agent.cycle`。
 
 ## 🚀 使用方法
 
