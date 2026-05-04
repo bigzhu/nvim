@@ -37,16 +37,8 @@ return {
 
       -- Recommended/example keymaps
       vim.keymap.set({ "n", "x" }, "<C-a>", function()
-        local server = require("opencode.events").connected_server
-        if server then
-          server:get_sessions(function(sessions)
-            if sessions and #sessions > 0 then
-              server:select_session(sessions[1].id)
-            end
-          end)
-        end
         require("opencode").ask("@this: ", { submit = true })
-      end, { desc = "Ask opencode (resume last session)…" })
+      end, { desc = "Ask opencode…" })
       vim.keymap.set({ "n", "x" }, "<C-x>", function()
         require("opencode").select()
       end, { desc = "Execute opencode action…" })
@@ -74,4 +66,3 @@ return {
     end,
   },
 }
-

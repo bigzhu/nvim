@@ -55,4 +55,9 @@ else
   vim.api.nvim_set_keymap("!", "<Esc>[13;5u", "<C-CR>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("", "<Esc>[13;2u", "<S-CR>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("!", "<Esc>[13;2u", "<S-CR>", { noremap = true, silent = true })
+
+  vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Terminal: window left" })
+  vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "Terminal: window down" })
+  vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Terminal: window up" })
+  vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Terminal: window right" })
 end
