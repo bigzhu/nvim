@@ -25,34 +25,39 @@ return {
         },
       },
     },
-    keys = {
-      { "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end, desc = "Opencode: Ask", mode = { "n", "x" } },
-      { "<leader>as", function() require("opencode").select() end, desc = "Opencode: Select Action", mode = { "n", "x" } },
-      { "<leader>at", function() require("opencode").toggle() end, desc = "Opencode: Toggle", mode = { "n", "t" } },
-      { "go", function() return require("opencode").operator("@this ") end, desc = "Opencode: Add Range", mode = { "n", "x" }, expr = true },
-      { "goo", function() return require("opencode").operator("@this ") .. "_" end, desc = "Opencode: Add Line", expr = true },
-    },
     config = function()
       vim.o.autoread = true
 
-      -- 自动恢复上次 session
-      local Server = require("opencode.server")
-      local Promise = require("opencode.promise")
-      local original_get = Server.get
-      Server.get = function()
-        return original_get():next(function(server)
-          return Promise.new(function(resolve)
-            server:get_sessions(function(sessions)
-              if sessions and #sessions > 0 then
-                server:select_session(sessions[1].id)
-              end
-              resolve(server)
-            end)
-          end)
-        end)
-      end
+      vim.g.opencode_opts = {}
 
-      -- AI 回复完成时通知
+      vim.keymap.set({ "n", "x" }, "<leader>aa", function()
+        require("opencode").ask("@this: ", { submit = true })
+      end, { desc = "Opencode: Ask" })
+
+      vim.keymap.set({ "n", "x" }, "<leader>as", function()
+        require("opencode").select()
+      end, { desc = "Opencode: Select Action" })
+
+      vim.keymap.set({ "n", "t" }, "<leader>at", function()
+        require("opencode").toggle()
+      end, { desc = "Opencode: Toggle" })
+
+      vim.keymap.set({ "n", "x" }, "go", function()
+        return require("opencode").operator("@this ")
+      end, { desc = "Opencode: Add Range", expr = true })
+
+      vim.keymap.set("n", "goo", function()
+        return require("opencode").operator("@this ") .. "_"
+      end, { desc = "Opencode: Add Line", expr = true })
+
+      vim.keymap.set("n", "<S-C-u>", function()
+        require("opencode").command("session.half.page.up")
+      end, { desc = "Opencode: Scroll up" })
+
+      vim.keymap.set("n", "<S-C-d>", function()
+        require("opencode").command("session.half.page.down")
+      end, { desc = "Opencode: Scroll down" })
+
       vim.api.nvim_create_autocmd("User", {
         pattern = "OpencodeEvent:session.idle",
         callback = function()
