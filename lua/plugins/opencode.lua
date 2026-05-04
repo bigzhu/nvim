@@ -35,6 +35,22 @@ return {
     config = function()
       vim.g.opencode_opts = {}
       vim.o.autoread = true
+
+      local Server = require("opencode.server")
+      local Promise = require("opencode.promise")
+      local original_get = Server.get
+      Server.get = function()
+        return original_get():next(function(server)
+          return Promise.new(function(resolve)
+            server:get_sessions(function(sessions)
+              if sessions and #sessions > 0 then
+                server:select_session(sessions[1].id)
+              end
+              resolve(server)
+            end)
+          end)
+        end)
+      end
     end,
   },
 }
