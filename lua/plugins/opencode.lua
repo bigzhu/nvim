@@ -33,13 +33,9 @@ return {
       { "goo", function() return require("opencode").operator("@this ") .. "_" end, desc = "Opencode: Add Line", expr = true },
     },
     config = function()
-      vim.g.opencode_opts = {
-        events = {
-          enabled = true,
-        },
-      }
       vim.o.autoread = true
 
+      -- 自动恢复上次 session
       local Server = require("opencode.server")
       local Promise = require("opencode.promise")
       local original_get = Server.get
@@ -56,10 +52,14 @@ return {
         end)
       end
 
+      -- AI 回复完成时通知
       vim.api.nvim_create_autocmd("User", {
         pattern = "OpencodeEvent:session.idle",
         callback = function()
           vim.notify("OpenCode 回复完毕", vim.log.levels.INFO, { title = "opencode" })
+          if vim.fn.has("mac") == 1 then
+            vim.fn.jobstart({ "afplay", "/System/Library/Sounds/Tink.aiff" })
+          end
         end,
       })
     end,
