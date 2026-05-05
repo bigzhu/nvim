@@ -12,14 +12,22 @@ return {
       local group = vim.api.nvim_create_augroup("snacks_explorer_refresh", { clear = true })
 
       local function refresh_explorer()
-        local ok, pickers = pcall(require, "snacks.picker")
+        local ok, picker_mod = pcall(require, "snacks.picker")
         if not ok then
           return
         end
-        pickers = pickers.get({ source = "explorer", tab = false })
+        local pickers = picker_mod.get({ source = "explorer", tab = false })
+        local actions_ok, actions_mod = pcall(require, "snacks.explorer.actions")
+        if not actions_ok then
+          return
+        end
+        local update = actions_mod.actions and actions_mod.actions.explorer_update
+        if not update then
+          return
+        end
         for _, picker in ipairs(pickers) do
           if picker and not picker.closed then
-            require("snacks.explorer.actions").explorer_update(picker)
+            update(picker)
           end
         end
       end
