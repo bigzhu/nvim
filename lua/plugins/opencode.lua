@@ -49,26 +49,22 @@ return {
       vim.keymap.set({ "n", "x" }, "<leader>ap", "<Nop>", { desc = "Prompt: 预设提问" })
       local prompt_keys = {
         ask = { key = "a", desc = "Ask: 提问" },
-        diagnostics = { key = "dia", desc = "Diagnostics: 诊断解释", direct = true },
-        diff = { key = "dif", desc = "Diff: 差异审查", direct = true },
-        document = { key = "do", desc = "Document: 添加注释", direct = true },
-        explain = { key = "e", desc = "Explain: 代码解释", direct = true },
-        fix = { key = "f", desc = "Fix: 修复诊断", direct = true },
-        implement = { key = "i", desc = "Implement: 实现代码", direct = true },
-        optimize = { key = "o", desc = "Optimize: 性能优化", direct = true },
-        review = { key = "r", desc = "Review: 审查代码", direct = true },
-        test = { key = "t", desc = "Test: 添加测试", direct = true },
-        commit = { key = "c", desc = "Commit: git 提交", direct = true },
+        diagnostics = { key = "dia", desc = "Diagnostics: 诊断解释" },
+        diff = { key = "dif", desc = "Diff: 差异审查" },
+        document = { key = "do", desc = "Document: 添加注释" },
+        explain = { key = "e", desc = "Explain: 代码解释" },
+        fix = { key = "f", desc = "Fix: 修复诊断" },
+        implement = { key = "i", desc = "Implement: 实现代码" },
+        optimize = { key = "o", desc = "Optimize: 性能优化" },
+        review = { key = "r", desc = "Review: 审查代码" },
+        test = { key = "t", desc = "Test: 添加测试" },
+        commit = { key = "c", desc = "Commit: git 提交" },
       }
       for name, mapping in pairs(prompt_keys) do
         local p = vim.g.opencode_opts.prompts[name]
         if p then
           vim.keymap.set({ "n", "x" }, "<leader>ap" .. mapping.key, function()
-            if mapping.direct then
-              require("opencode").prompt(p.prompt)
-            else
-              require("opencode").ask(p.prompt, { submit = p.submit })
-            end
+            require("opencode").ask(p.prompt, { submit = p.submit })
           end, { desc = mapping.desc })
         end
       end
