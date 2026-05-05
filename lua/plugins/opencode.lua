@@ -45,7 +45,8 @@ return {
         },
       }
 
-      -- <leader>ap = prompt: 根据选中内容或光标位置发起预设提问
+      -- <leader>ap = Prompt: 根据选中内容或光标位置发起预设提问
+      vim.keymap.set({ "n", "x" }, "<leader>ap", "<Nop>", { desc = "Prompt: 预设提问" })
       local prompt_keys = {
         ask = { key = "a", desc = "Ask: 提问" },
         diagnostics = { key = "dia", desc = "Diagnostics: 诊断解释", direct = true },
@@ -72,7 +73,7 @@ return {
         end
       end
 
-      -- <leader>aa = add: 将选中内容或当前行追加到 opencode 上下文
+      -- <leader>aa = Add: 将选中内容或当前行追加到 opencode 上下文
       vim.keymap.set({ "n", "x" }, "<leader>aa", function()
         return require("opencode").operator("@this ")
       end, { desc = "Add: 追加选区", expr = true })
@@ -80,7 +81,9 @@ return {
         return require("opencode").operator("@this ") .. "_"
       end, { desc = "Add Line: 追加当前行", expr = true })
 
-      -- <leader>ac = command: 会话和代理管理
+      -- <leader>ac = Command: 会话和代理管理
+      vim.keymap.set({ "n", "x" }, "<leader>ac", "<Nop>", { desc = "Command: 会话和代理管理" })
+      -- session: 会话管理
       vim.keymap.set({ "n", "x" }, "<leader>acl", function()
         require("opencode").command("session.list")
       end, { desc = "List: 列出会话" })
@@ -105,11 +108,13 @@ return {
       vim.keymap.set({ "n", "x" }, "<leader>acr", function()
         require("opencode").command("session.redo")
       end, { desc = "Redo: 重做" })
+      -- agent: 代理控制
       vim.keymap.set({ "n", "x" }, "<leader>aca", function()
         require("opencode").command("agent.cycle")
       end, { desc = "Agent: 切换代理" })
 
-      -- <leader>az = scroll: 翻页定位
+      -- <leader>az = Scroll: 翻页定位
+      vim.keymap.set({ "n", "t" }, "<leader>az", "<Nop>", { desc = "Scroll: 翻页定位" })
       vim.keymap.set({ "n", "t" }, "<leader>azu", function()
         require("opencode").command("session.half.page.up")
       end, { desc = "Up: 上半翻" })
@@ -129,7 +134,8 @@ return {
         require("opencode").command("session.last")
       end, { desc = "Last: 末消息" })
 
-      -- <leader>ai = input: TUI 操作
+      -- <leader>ai = Input: TUI 操作
+      vim.keymap.set({ "n", "i", "t" }, "<leader>ai", "<Nop>", { desc = "Input: TUI 操作" })
       vim.keymap.set({ "n", "i", "t" }, "<leader>ais", function()
         require("opencode").command("prompt.submit")
       end, { desc = "Submit: 提交输入" })
@@ -137,7 +143,7 @@ return {
         require("opencode").command("prompt.clear")
       end, { desc = "Clear: 清除输入" })
 
-      -- <leader>au = ui: 操作界面
+      -- <leader>au = UI: 操作界面
       vim.keymap.set({ "n", "x" }, "<leader>au", function()
         require("opencode").select()
       end, { desc = "UI Menu: 操作菜单" })
